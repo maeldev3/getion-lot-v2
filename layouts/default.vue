@@ -1,7 +1,6 @@
 <template>
   <div class="flex h-screen overflow-hidden" style="background:#0b1120">
 
-    <!-- Mobile overlay -->
     <div v-if="mobileOpen" @click="mobileOpen=false"
       class="fixed inset-0 bg-black/60 z-20 lg:hidden"/>
 
