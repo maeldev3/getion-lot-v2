@@ -3,9 +3,9 @@ export default defineNuxtConfig({
   modules: ['@nuxtjs/supabase', '@pinia/nuxt', '@nuxtjs/tailwindcss'],
   supabase: {
     redirectOptions: {
-      login: '/auth/login',
+      // login: '/auth/login',
       callback: '/auth/confirm',
-      exclude: ['/auth/*'],
+      // exclude: ['/auth/*'],
     }
   },
   app: {
