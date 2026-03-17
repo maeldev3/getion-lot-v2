@@ -135,17 +135,37 @@ async function handleSubmit() {
   loading.value = true
   error.value = ''
   try {
-    const { data: agency } = await supabase.from('agencies').select('id').limit(1).single()
+    const { data: agency, error: agencyErr } = await supabase
+      .from('agencies')
+      .select('id')
+      .limit(1)
+      .maybeSingle()
+
+    if (agencyErr) throw agencyErr
+    
+    // ✅ Stop ici si pas d'agence
+    if (!agency?.id) {
+      error.value = "Aucune agence configurée. Ajoutez une agence dans Supabase."
+      loading.value = false
+      return
+    }
+
     const payload = { ...form, agency_id: agency.id }
     if (!payload.zone_id) payload.zone_id = null
 
     if (isEdit.value) {
-      const { error: err } = await supabase.from('clients').update(payload).eq('id', clientId.value)
+      const { error: err } = await supabase
+        .from('clients')
+        .update(payload)
+        .eq('id', clientId.value)
       if (err) throw err
     } else {
-      const { error: err } = await supabase.from('clients').insert(payload)
+      const { error: err } = await supabase
+        .from('clients')
+        .insert(payload)
       if (err) throw err
     }
+
     router.push('/clients')
   } catch (e) {
     error.value = e.message
